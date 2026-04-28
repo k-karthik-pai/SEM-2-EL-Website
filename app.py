@@ -85,9 +85,9 @@ pct_abn = n_abn / total * 100
 avg_hyb = float(df["hybrid_score"].mean())
 is_paced = selected in PACED
 
-if avg_hyb > 0.5:
+if avg_hyb > 0.35:
     risk_lvl, risk_color = "HIGH RISK", "red"
-elif avg_hyb > 0.35:
+elif avg_hyb > 0.25:
     risk_lvl, risk_color = "MODERATE RISK", "orange"
 else:
     risk_lvl, risk_color = "LOW RISK", "green"
@@ -130,7 +130,7 @@ with st.container(border=True):
         fig.add_trace(go.Scatter(x=bidx[abn], y=dfp["hybrid_score"][abn], mode="markers",
             name="Abnormal", marker=dict(color="#db4437", size=6, line=dict(color="#c5221f", width=1))))
             
-    fig.add_hline(y=0.5, line_dash="dash", line_color="#db4437", annotation_text="Threshold (0.5)")
+    fig.add_hline(y=0.35, line_dash="dash", line_color="#db4437", annotation_text="Threshold (0.35)")
     fig.update_layout(height=350, margin=dict(l=10, r=10, t=30, b=10), template="plotly_white",
                       legend=dict(orientation="h", y=-0.2, x=0), hovermode="x unified")
     st.plotly_chart(fig, use_container_width=True)
@@ -160,13 +160,13 @@ with col_b:
             number={"suffix": "%", "font": {"size": 24}},
             gauge={
                 "axis": {"range": [0, 100]},
-                "bar": {"color": "#db4437" if avg_hyb > 0.5 else "#f4b400" if avg_hyb > 0.35 else "#0f9d58"},
+                "bar": {"color": "#db4437" if avg_hyb > 0.35 else "#f4b400" if avg_hyb > 0.25 else "#0f9d58"},
                 "steps": [
-                    {"range": [0, 35], "color": "#e6f4ea"},
-                    {"range": [35, 50], "color": "#fef7e0"},
-                    {"range": [50, 100],"color": "#fce8e6"},
+                    {"range": [0, 25], "color": "#e6f4ea"},
+                    {"range": [25, 35], "color": "#fef7e0"},
+                    {"range": [35, 100],"color": "#fce8e6"},
                 ],
-                "threshold": {"line": {"color": "black", "width": 2}, "thickness": 0.75, "value": 50},
+                "threshold": {"line": {"color": "black", "width": 2}, "thickness": 0.75, "value": 35},
             }
         ))
         fig_g.update_layout(height=320, margin=dict(l=20,r=20,t=20,b=20))
